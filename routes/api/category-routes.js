@@ -7,11 +7,17 @@ router.get('/', (req, res) => {
   // find all categories
   // be sure to include its associated Products
   Category.findAll({
-    attributes: ['id', 'category_name']
+    attributes: ['id', 'category_name'],
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      }
+    ]
   })
     .then(dbCategoryData => res.json(dbCategoryData))
     .catch(err => {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(err);
     });
 });
@@ -21,6 +27,12 @@ router.get('/:id', (req, res) => {
   // be sure to include its associated Products
   Category.findOne({
     attributes: ['id', 'category_name'],
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      }
+    ],
     where: {
       id: req.params.id
     }
@@ -33,7 +45,7 @@ router.get('/:id', (req, res) => {
       res.json(dbCategoryData);
     })
     .catch(err => {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(err);
     });
 });
@@ -65,7 +77,7 @@ router.put('/:id', (req, res) => {
       res.json(dbCategoryData);
     })
     .catch(err => {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(err);
     })
 });
@@ -85,7 +97,7 @@ router.delete('/:id', (req, res) => {
       res.json(dbCategoryData);
     })
     .catch(err => {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(err);
     });
 });
